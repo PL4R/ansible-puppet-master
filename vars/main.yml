@@ -1,0 +1,8 @@
+---
+# vars file for ansible-puppet-master
+puppetmaster_tarfilename: puppet-enterprise-2016.5.1-el-7-x86_64.tar.gz
+puppetmaster_tmpdirname: puppet-enterprise-2016.5.1-el-7-x86_64
+puppetmaster_url: https://pm.puppetlabs.com/cgi-bin/download.cgi?dist=el&rel=7&arch=x86_64&ver=latest
+puppetmaster_installer: puppet-enterprise-installer
+puppetagent_run: /usr/local/bin/puppet agent -t
+tmp_dir: /tmp/

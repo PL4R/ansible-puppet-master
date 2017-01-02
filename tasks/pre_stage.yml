@@ -1,0 +1,20 @@
+---
+
+- name: Checking if PE has been installed already
+  tags: install
+  stat: path="/{{tmp_dir}}{{puppetmaster_tmpdirname}}"
+  register: puppetinstaller_path
+
+- name: Get Puppet Installer on server
+  unarchive:
+    src: "files/{{puppetmaster_tarfilename}}"
+    dest: "{{tmp_dir}}"
+  when: puppetinstaller_path.stat.exists == false
+
+- name: Push out pe.conf to install dir
+  copy:
+    src: files/pe.conf
+    dest: "{{tmp_dir}}{{puppetmaster_tmpdirname}}/conf.d/"
+
+- name: Set up hosts file
+  template: src=hosts.j2 dest=/etc/hosts

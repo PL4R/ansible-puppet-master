@@ -1,0 +1,23 @@
+---
+
+- name: Checking if PE has been installed already
+  tags: install
+  stat: path="/opt/puppetlabs"
+  register: puppetmaster_path
+
+- name: Install Puppet Enterprise
+  tags: install
+  shell: "{{tmp_dir}}{{puppetmaster_tmpdirname}}/{{puppetmaster_installer}} -c {{tmp_dir}}{{puppetmaster_tmpdirname}}/conf.d/pe.conf"
+  become: true
+  when: puppetmaster_path.stat.exists == false
+
+- name: First Puppet run
+  tags: install
+  shell: "{{puppetagent_run}}"
+  become: true
+  ignore_errors: yes
+
+- name: Restart pe-console-services
+  service:
+    name: pe-console-services
+    state: restarted
