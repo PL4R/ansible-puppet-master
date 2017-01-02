@@ -5,10 +5,22 @@
   stat: path="/{{tmp_dir}}{{puppetmaster_tmpdirname}}"
   register: puppetinstaller_path
 
-- name: Get Puppet Installer on server
+- name: Checking if PE tarball is already on server
+  tags: install
+  stat: path="{{tmp_dir}}{{puppetmaster_tarfilename}}"
+  register: puppetinstaller_tarball
+
+- name: Get Puppet Tarball on server
+  get_url:
+    url: "{{puppetmaster_url}}"
+    dest: "{{tmp_dir}}{{puppetmaster_tarfilename}}"
+  when: puppetinstaller_tarball.stat.exists == false
+
+- name: Get Puppet Extracted on server
   unarchive:
-    src: "files/{{puppetmaster_tarfilename}}"
+    src: "{{tmp_dir}}{{puppetmaster_tarfilename}}"
     dest: "{{tmp_dir}}"
+    remote_src: True
   when: puppetinstaller_path.stat.exists == false
 
 - name: Push out pe.conf to install dir
