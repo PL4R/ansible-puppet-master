@@ -27,4 +27,4 @@ BSD
 Author Information
 ------------------
 
-Written by David McElin @plar
+Written by David McElin @pl4r
